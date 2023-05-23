@@ -1,11 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 var mode = process.env.NODE_ENV || 'development';
 
 const config = {
   name: 'Missing Paws',
   mode: mode,
-  mode: 'production',
   entry: path.join(__dirname, "src", "index.js"),
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -15,6 +15,12 @@ const config = {
     modules: ['src', 'node_modules'],
   },
   externals: {
+},
+devServer: {
+  static: {
+    directory: path.join(__dirname, 'public'),
+  },
+  compress: true,
 },
   module: {
     rules: [
@@ -33,6 +39,10 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "index.html"),
+    }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /.js$|.css$/,
     }),
   ],
   resolve: {
